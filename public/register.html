@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Register - Jubal Music</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="navbar">
+    <div class="logo">
+      <img src="img/loo-removebg-preview.png" alt="Jubal Logo" />
+    </div>
+    <nav class="navbar">
+      <div class="nav-left">
+        <a href="index.html">Home</a>
+        <a href="#">About</a>
+        <a href="#">Courses</a>
+        <a href="#">Pricing</a>
+      </div>
+      <div class="nav-right">
+        <a href="index.html" class="btn login" style=" background-color: orange;
+  border: 2px solid rgb(255, 255, 255);
+  color: white;">Login</a>
+      </div>
+    </nav>
+    <div class="hamburger" onclick="document.querySelector('.navbar').classList.toggle('open')">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </header>
+
+  <section class="hero" style="height: 100%;">
+    <div class="hero-content">
+      <div class="hero-text">
+        <h1>Join Jubal Today</h1>
+        <p>Start your musical journey with expert-led courses and flexible learning.</p>
+      </div>
+
+   <form id="register-form" class="login-form" action="#" method="POST" style="background: #11819768; padding: 30px 25px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); max-width: 400px; width: 100%; font-family: 'Montserrat', sans-serif;">
+  <h2 style="text-align: center; margin-bottom: 20px; color: #ffffff;">Register</h2>
+
+  <label for="reg-name" style="display: block; margin-bottom: 6px; font-weight: 700; color: orange;">Full Name</label>
+  <input type="text" id="reg-name" name="name" placeholder="Your full name" required style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 8px; font-size: 14px;" />
+
+  <label for="reg-email" style="display: block; margin-bottom: 6px; font-weight: 700; color: orange;">Email</label>
+  <input type="email" id="reg-email" name="email" placeholder="you@example.com" required style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 8px; font-size: 14px;" />
+
+  <label for="reg-phone" style="display: block; margin-bottom: 6px; font-weight: 700; color: orange;">Phone</label>
+  <input type="tel" id="reg-phone" name="phone" placeholder="(Optional)" style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 8px; font-size: 14px;" />
+
+  <label for="reg-location" style="display: block; margin-bottom: 6px; font-weight: 700; color: orange;">Location</label>
+  <input type="text" id="reg-location" name="location" placeholder="(Optional)" style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 8px; font-size: 14px;" />
+
+  <label for="reg-password" style="display: block; margin-bottom: 6px; font-weight: 700; color: orange;">Password</label>
+  <input type="password" id="reg-password" name="password" placeholder="Create a password" required style="width: 100%; padding: 10px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 8px; font-size: 14px;" />
+
+  <button type="submit" class="btn-primary" style="width: 100%; padding: 12px; background: orange; color: white; border: 2px solid white; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; transition: background 0.7s;">Register</button>
+
+  <a href="index.html" style="display: block; text-align: center; margin-top: 15px; font-size: 14px; color: #ffffff; text-decoration: none;">Already have an account? Login</a>
+
+  <p id="register-msg" style="color: red; text-align: center; margin-top: 10px;"></p>
+</form>
+
+</div>
+
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-links">
+      <a href="#">About</a>
+      <a href="#">Contact</a>
+      <a href="#">Terms</a>
+    </div>
+  </footer>
+
+  <script>
+      // Register handler
+    document.getElementById('register-form').addEventListener('submit', async e => {
+      e.preventDefault();
+      const name = document.getElementById('reg-name').value;
+      const email = document.getElementById('reg-email').value;
+      const phone = document.getElementById('reg-phone').value;
+      const location = document.getElementById('reg-location').value;
+      const password = document.getElementById('reg-password').value;
+
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, phone, location, password }),
+      });
+
+     const data = await res.json();
+if (res.ok) {
+  // Redirect to profile page
+  window.location.href = '/index.html';
+} else {
+  alert(data.msg || 'Registration failed');
+}
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<footer class="bg-gray-900 text-white py-8 mt-12">
+  <div class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
+    <div>
+      <h3 class="text-orange-400 font-semibold mb-2">Support / Help Center</h3>
+      <ul class="space-y-1">
+        <li><a href="#" class="hover:text-orange-300">FAQs</a></li>
+        <li><a href="#" class="hover:text-orange-300">Contact Support</a></li>
+        <li><a href="#" class="hover:text-orange-300">Live Chat</a></li>
+        <li><a href="#" class="hover:text-orange-300">Report an Issue</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h3 class="text-orange-400 font-semibold mb-2">About Jubal</h3>
+      <ul class="space-y-1">
+        <li><a href="#" class="hover:text-orange-300">Our Mission</a></li>
+        <li><a href="#" class="hover:text-orange-300">Team</a></li>
+        <li><a href="#" class="hover:text-orange-300">Blog</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h3 class="text-orange-400 font-semibold mb-2">Follow Us</h3>
+      <ul class="space-y-1">
+        <li><a href="#" class="hover:text-orange-300">Facebook</a></li>
+        <li><a href="#" class="hover:text-orange-300">Instagram</a></li>
+        <li><a href="#" class="hover:text-orange-300">YouTube</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="text-center mt-8 text-gray-400 text-xs">
+    &copy; 2025 Jubal Music. All rights reserved.
+  </div>
+</footer>
+
+
+</body>
+</html>

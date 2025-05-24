@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  <link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/main.min.css' rel='stylesheet' />
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/main.min.js'></script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Student Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --custom-teal: #118097;
+    }
+    .bg-custom {
+      background-color: var(--custom-teal);
+    }
+    .text-custom {
+      color: var(--custom-teal);
+    }
+    .hover\:bg-custom-dark:hover {
+      background-color: #0e6a7e;
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen flex flex-col md:flex-row">
+
+  
+
+
+  <!-- Sidebar -->
+  <aside class="bg-custom flex flex-col items-center justify-start w-full md:w-64 md:min-h-screen p-4">
+    <div class="flex items-center justify-between w-full md:flex-col md:items-center">
+      <img src="img/loo-removebg-preview.png" alt="logo" style="width: 160px;"><br>
+      <div class="flex items-center gap-4 md:flex-col" >
+        <img id="profile-pic" src="https://via.placeholder.com/100" alt="Profile" class="rounded-full border-4 border-white w-16 h-16 md:w-24 md:h-24" />
+        <div class="text-center">
+          <h2 id="sidebar-name" class="text-white font-semibold text-lg md:text-xl">Loading...</h2>
+          <p id="sidebar-email" class="text-gray-300 text-sm md:text-base hidden md:block">Loading...</p>
+        </div>
+      </div>
+      <button id="hamburger-btn" class="md:hidden p-2 rounded hover:bg-white/20" aria-label="Toggle menu">
+        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+ <nav id="sidebar-buttons" class="mt-4 w-full flex flex-col gap-3 md:items-center hidden md:flex">
+
+  <!-- Upload Photo -->
+  <input type="file" id="upload-photo" class="hidden" />
+  <button onclick="document.getElementById('upload-photo').click()" class="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded text-sm px-3 py-1.5 md:w-3/4">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1M12 12v6m0 0l3-3m-3 3l-3-3M12 6v6" />
+    </svg>
+    Upload Photo
+  </button>
+
+  <!-- Edit Profile -->
+  <button id="edit-btn" class="flex items-center gap-2 bg-white text-custom font-semibold rounded text-sm px-3 py-1.5 md:w-3/4 hover:bg-gray-200">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536M9 13l6-6m2-2a2.828 2.828 0 010 4L7 21H3v-4L15.232 5.232z" />
+    </svg>
+    Edit Profile
+  </button>
+
+  <!-- Live Zoom -->
+  <button class="flex items-center gap-2 bg-white text-custom font-semibold rounded text-sm px-3 py-1.5 md:w-3/4 hover:bg-gray-200">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14m0-4v4m-6 4h-.01M6 4h12a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2z" />
+    </svg>
+    Live Zoom
+  </button>
+
+  <!-- Downloads -->
+  <button class="flex items-center gap-2 bg-white text-custom font-semibold rounded text-sm px-3 py-1.5 md:w-3/4 hover:bg-gray-200">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1M12 12v6m0 0l3-3m-3 3l-3-3M12 6v6" />
+    </svg>
+    Downloads
+  </button>
+
+  <!-- Games -->
+  <button class="flex items-center gap-2 bg-white text-custom font-semibold rounded text-sm px-3 py-1.5 md:w-3/4 hover:bg-gray-200">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+      <path d="M13.41 10l1.3-1.3a1 1 0 00-1.42-1.42L12 8.59l-1.3-1.3a1 1 0 00-1.42 1.42l1.3 1.3-1.3 1.3a1 1 0 001.42 1.42l1.3-1.3 1.3 1.3a1 1 0 001.42-1.42L13.41 10z" />
+      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-4-8a4 4 0 018 0 4 4 0 01-8 0z" clip-rule="evenodd" />
+    </svg>
+    Games
+  </button>
+
+  <!-- Settings (Suggested) -->
+  <button class="flex items-center gap-2 bg-white text-custom font-semibold rounded text-sm px-3 py-1.5 md:w-3/4 hover:bg-gray-200">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 3.006-1.756 3.432 0a1.724 1.724 0 002.591 1.065c1.37-.912 3.18.899 2.268 2.268a1.724 1.724 0 001.065 2.591c1.756.426 1.756 3.006 0 3.432a1.724 1.724 0 00-1.065 2.591c.912 1.37-.899 3.18-2.268 2.268a1.724 1.724 0 00-2.591 1.065c-.426 1.756-3.006 1.756-3.432 0a1.724 1.724 0 00-2.591-1.065c-1.37.912-3.18-.899-2.268-2.268a1.724 1.724 0 00-1.065-2.591c-1.756-.426-1.756-3.006 0-3.432a1.724 1.724 0 001.065-2.591c-.912-1.37.899-3.18 2.268-2.268a1.724 1.724 0 002.591-1.065z" />
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+    </svg>
+    Settings
+  </button>
+
+  <!-- Logout -->
+  <button onclick="logout()" class="flex items-center gap-2 bg-custom hover:bg-custom-dark border border-white text-white rounded text-sm px-3 py-1.5 md:w-3/4">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a1 1 0 01-1 1H5a1 1 0 01-1-1V7a1 1 0 011-1h7a1 1 0 011 1v1" />
+    </svg>
+    Logout
+  </button>
+
+</nav>
+
+
+  </aside>
+
+  <!-- Profile Edit Form -->
+  <main class="flex-1 p-6">
+    <div id="profile-edit-wrapper" class="hidden">
+      <div class="bg-gray-800 rounded-xl shadow-lg p-6 max-w-4xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-gray-300 mb-1" for="input-name">Full Name</label>
+            <input id="input-name" type="text" class="w-full bg-gray-700 text-white rounded p-2 border border-gray-600 focus:ring-2 focus:ring-[var(--custom-teal)]" />
+          </div>
+          <div>
+            <label class="block text-gray-300 mb-1" for="input-email">Email</label>
+            <input id="input-email" type="email" class="w-full bg-gray-700 text-white rounded p-2 border border-gray-600 focus:ring-2 focus:ring-[var(--custom-teal)]" />
+          </div>
+          <div>
+            <label class="block text-gray-300 mb-1" for="input-phone">Phone</label>
+            <input id="input-phone" type="tel" class="w-full bg-gray-700 text-white rounded p-2 border border-gray-600 focus:ring-2 focus:ring-[var(--custom-teal)]" />
+          </div>
+          <div>
+            <label class="block text-gray-300 mb-1" for="input-location">Location</label>
+            <input id="input-location" type="text" class="w-full bg-gray-700 text-white rounded p-2 border border-gray-600 focus:ring-2 focus:ring-[var(--custom-teal)]" />
+          </div>
+        </div>
+        <button id="save-btn" class="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded transition w-full mt-6">Save Changes</button>
+      </div>
+    </div>
+<br>
+    <!-- Welcome Message -->
+    <section class="max-w-4xl mx-auto mb-8 text-center px-4">
+      <h1 class="text-3xl font-bold text-white mb-4">
+        Welcome to Your Learning Journey, <span id="student-name">Student</span>!
+      </h1>
+      <p class="text-gray-300 text-lg">
+        We're excited to have you here. Explore your courses, sharpen your skills, and take one step closer to achieving your goals.
+      </p>
+    </section> <br>
+
+    <!-- Courses + Schedule Section (2-column layout) -->
+<section class="flex flex-col lg:flex-row gap-6 mt-8 px-4">
+
+  <!-- LEFT: Courses Section -->
+  <div class="flex-1 space-y-8">
+
+    <!-- Available Courses -->
+    <div>
+      <h2 class="text-2xl font-bold mb-4 text-white">Available Courses</h2>
+      <div id="courses-section" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
+    </div>
+
+    <!-- Enrolled Courses -->
+    <div>
+      <h2 class="text-2xl font-bold mb-4 text-white">My Enrolled Courses</h2>
+      <div id="enrolled-courses-section" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
+    </div>
+
+  </div>
+
+  <!-- RIGHT: Schedule Box -->
+ <div class="w-full lg:w-80 bg-gray-800 p-4 rounded-xl shadow-lg self-start mt-12">
+ <h2 class="text-xl font-bold text-white mb-4 text-center">Course Schedule</h2>
+
+    <div class="space-y-4">
+      <div class="schedule-item">
+        <div class="schedule-info">
+          <h3>Beginners 2025</h3>
+          <p>Jul 7th · 6:00–7:00 PM · Sir. Safraz</p>
+        </div>
+        <button class="join-btn">Join</button>
+      </div>
+
+      <div class="schedule-item">
+        <div class="schedule-info">
+          <h3>Intermediate</h3>
+          <p>Jul 8th · 6:00–7:00 PM · Ms. Selena</p>
+        </div>
+        <button class="join-btn">Join</button>
+      </div>
+
+      <div class="schedule-item">
+        <div class="schedule-info">
+          <h3>Advance</h3>
+          <p>Jul 9th · 6:00–7:00 PM · Mr. Alex</p>
+        </div>
+        <button class="join-btn">Join</button>
+      </div>
+
+      <div class="schedule-item">
+        <div class="schedule-info">
+          <h3>A,B.R.S.M Prep</h3>
+          <p>Jul 10th · 7:00–8:00 PM · Mr. Alex</p>
+        </div>
+        <button class="join-btn">Join</button>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+
+    <!-- Enrollment Confirmation Modal -->
+    <div id="enroll-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+      <div class="bg-gray-800 rounded-lg p-6 max-w-sm w-full relative">
+        <button id="close-enroll-modal" class="absolute top-2 right-3 text-white text-2xl font-bold" aria-label="Cancel enrollment">&times;</button>
+        <h2 class="text-white text-xl font-semibold mb-4">Confirm Enrollment</h2>
+        <p class="text-gray-300 mb-6">Please make payments via MMG to 759-8644.<br>  An email will be sent with zoom link upon confirmation of payments.Thank you. </p>
+        <div class="flex justify-between gap-4">
+          <button id="cancel-enroll-btn" class="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 rounded">Cancel</button>
+          <button id="proceed-enroll-btn" class="flex-1 bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 rounded">Proceed</button>
+        </div>
+      </div>
+    </div>
+    
+    <style>
+  .schedule-box {
+    max-width: 600px;
+    margin: 9rem auto;
+    font-family: 'Montserrat', sans-serif;
+  }
+
+  .schedule-heading {
+    text-align: center;
+    font-size: 20px;
+    margin-bottom: 1rem;
+    color: #ffffff;
+  }
+
+  .schedule-item {
+    background: #e6f9f8;
+    border-left: 5px solid #118097;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.75rem;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  }
+
+  .schedule-info {
+    flex: 1;
+  }
+
+  .schedule-info h3 {
+    margin: 0;
+    font-size: 16px;
+    color: #118097;
+  }
+
+  .schedule-info p {
+    margin: 2px 0;
+    font-size: 13px;
+    color: #333;
+  }
+
+  .join-btn {
+    background: orange;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    font-size: 13px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+
+  .join-btn:hover {
+    background: #0d6776;
+  }
+</style>
+<br>
+
+<footer class="bg-gray-200 text-center text-sm text-gray-700 py-3 mt-auto">
+  <div class="max-w-4xl mx-auto px-4">
+    <h3 class="text-lg font-semibold text-gray-800 mb-2">Support / Help Center</h3>
+    <div class="flex flex-col sm:flex-row justify-center gap-6 mb-4">
+      <a href="#" class="hover:text-orange-500">FAQs</a>
+      <a href="#" class="hover:text-orange-500">Contact Support</a>
+      <a href="#" class="hover:text-orange-500">Live Chat</a>
+      <a href="#" class="hover:text-orange-500">Report an Issue</a>
+    </div>
+    <p class="text-xs mt-4">Email: support@jubal.gy | Phone: +592-123-4567</p>
+
+    <p class="text-xs text-gray-500">&copy; 2025 Jubal Music. All rights reserved.</p>
+    
+  </div>
+  
+</footer>
+
+
+  </main>
+
+  
+
+  <!-- Script -->
+  <script>
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("You are not logged in.");
+      window.location.href = "/index.html";
+    }
+
+    const editBtn = document.getElementById("edit-btn");
+    const profileEditWrapper = document.getElementById("profile-edit-wrapper");
+    const saveBtn = document.getElementById("save-btn");
+
+    editBtn.addEventListener("click", () => {
+      profileEditWrapper.classList.toggle("hidden");
+    });
+
+    saveBtn.addEventListener("click", async () => {
+      const name = document.getElementById("input-name").value;
+      const email = document.getElementById("input-email").value;
+      const phone = document.getElementById("input-phone").value;
+      const location = document.getElementById("input-location").value;
+
+      try {
+        const res = await fetch("/api/profile", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ name, email, phone, location }),
+        });
+
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.msg || "Failed to update profile");
+
+        alert("Profile updated successfully!");
+        document.getElementById("sidebar-name").textContent = data.name;
+        document.getElementById("sidebar-email").textContent = data.email;
+        profileEditWrapper.classList.add("hidden");
+      } catch (err) {
+        alert(err.message);
+      }
+    });
+
+    document.getElementById("upload-photo").addEventListener("change", async (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const formData = new FormData();
+      formData.append("photo", file);
+
+      try {
+        const res = await fetch("/api/profile/upload-photo", {
+          method: "POST",
+          headers: { Authorization: `Bearer ${token}` },
+          body: formData,
+        });
+
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.msg || "Upload failed");
+
+        alert("Photo uploaded!");
+        document.getElementById("profile-pic").src = `data:image/png;base64,${data.user.photo}`;
+      } catch (err) {
+        alert(err.message);
+      }
+    });
+
+    const hamburgerBtn = document.getElementById("hamburger-btn");
+const sidebarButtons = document.getElementById("sidebar-buttons");
+
+hamburgerBtn.addEventListener("click", () => {
+  sidebarButtons.classList.toggle("hidden");
+});
+
+
+    async function loadProfile() {
+      try {
+        const res = await fetch("/api/profile", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.msg || "Failed to load profile");
+
+        document.getElementById("sidebar-name").textContent = data.name;
+        document.getElementById("sidebar-email").textContent = data.email;
+        document.getElementById("student-name").textContent = data.name;
+
+        if (data.photo) {
+          document.getElementById("profile-pic").src = `data:image/png;base64,${data.photo}`;
+        }
+
+        // Pre-fill edit form fields
+        document.getElementById("input-name").value = data.name;
+        document.getElementById("input-email").value = data.email;
+        document.getElementById("input-phone").value = data.phone || "";
+        document.getElementById("input-location").value = data.location || "";
+      } catch (err) {
+        alert(err.message);
+      }
+    }
+
+    function logout() {
+  localStorage.removeItem('token');
+  window.location.href = '/index.html';
+}
+
+    async function loadCourses() {
+      try {
+        const res = await fetch("/api/courses");
+        const courses = await res.json();
+
+        const container = document.getElementById("courses-section");
+        container.innerHTML = "";
+
+        courses.forEach(course => {
+          const courseCard = document.createElement("div");
+         courseCard.className = "bg-[rgba(17,128,151,0.2)] p-4 rounded-lg shadow-lg flex flex-col border border-[#118097]";
+
+          courseCard.innerHTML = `
+            <h3 class="text-lg font-semibold text-white">${course.title}</h3>
+            <p class="text-gray-400">${course.description}</p>
+            <button class="mt-3 enroll-btn bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded px-4 py-2 w-full" data-id="${course._id}">Enroll</button>
+          `;
+
+          container.appendChild(courseCard);
+        });
+
+       
+
+
+
+        // Modal Elements
+        const enrollModal = document.getElementById("enroll-modal");
+        const closeEnrollModalBtn = document.getElementById("close-enroll-modal");
+        const cancelEnrollBtn = document.getElementById("cancel-enroll-btn");
+        const proceedEnrollBtn = document.getElementById("proceed-enroll-btn");
+
+        let pendingCourseId = null;
+
+        // Show modal when enroll button clicked
+        document.querySelectorAll(".enroll-btn").forEach(button => {
+          button.addEventListener("click", (e) => {
+            pendingCourseId = e.target.getAttribute("data-id");
+            enrollModal.classList.remove("hidden");
+          });
+        });
+
+        function closeModal() {
+          enrollModal.classList.add("hidden");
+          pendingCourseId = null;
+        }
+
+        closeEnrollModalBtn.addEventListener("click", closeModal);
+        cancelEnrollBtn.addEventListener("click", closeModal);
+
+        proceedEnrollBtn.addEventListener("click", async () => {
+          if (!pendingCourseId) return;
+
+          try {
+            const res = await fetch("/api/enrollments/enroll", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+              body: JSON.stringify({ courseId: pendingCourseId }),
+            });
+
+            const result = await res.json();
+            if (!res.ok) throw new Error(result.msg || "Enrollment failed");
+
+            alert("You have successfully enrolled in the course.");
+            closeModal();
+            loadEnrolledCourses();
+          } catch (error) {
+            alert("Error: " + error.message);
+          }
+        });
+
+      } catch (err) {
+        alert("Failed to load courses: " + err.message);
+      }
+    }
+
+   async function loadEnrolledCourses() {
+  try {
+    const res = await fetch('/api/enrollments/my-courses', {
+      headers: { Authorization: 'Bearer ' + token }
+    });
+
+    if (!res.ok) throw new Error('Failed to load enrolled courses');
+
+    const enrolledCourses = await res.json();
+
+    const container = document.getElementById('enrolled-courses-section');
+    container.innerHTML = '';
+
+    if (enrolledCourses.length === 0) {
+      container.innerHTML = '<p class="text-gray-400">You are not enrolled in any courses yet.</p>';
+      return;
+    }
+
+    enrolledCourses.forEach(course => {
+      const courseCard = document.createElement('div');
+      courseCard.className = 'bg-white p-4 rounded-lg shadow-lg flex flex-col mb-4 border-l-4 border-orange-500';
+
+      courseCard.innerHTML = `
+        <h3 class="text-lg font-semibold text-black">${course.title}</h3>
+      `;
+
+      container.appendChild(courseCard);
+    });
+  } catch (err) {
+    console.error(err);
+    alert('Error loading your enrolled courses.');
+  }
+}
+    // Load all on page load
+    window.addEventListener("DOMContentLoaded", () => {
+      loadProfile();
+      loadCourses();
+      loadEnrolledCourses();
+    });
+  </script>
+
+  
+</body>
+</html>
