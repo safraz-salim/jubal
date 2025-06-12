@@ -20,6 +20,7 @@ app.use('/api/profile', require('./routes/profileRoutes'));
 app.use('/api/courses', require('./routes/courses'));
 app.use('/api/enrollments', require('./routes/enrollments'));
 
+
 const Contact = require('./models/Contact');
 
 // Route to handle contact form
